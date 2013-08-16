@@ -7,7 +7,7 @@
    :user "strika"
    :password "strika"})
 
-(defn initialized? [] false)
+(defn initialized? [] true)
 
 (defn create-users-table []
   (sql/with-connection db-spec
