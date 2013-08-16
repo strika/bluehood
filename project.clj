@@ -13,6 +13,7 @@
    [markdown-clj "0.9.29"]
    [postgresql/postgresql "9.1-901.jdbc4"]
    [korma "0.3.0-RC5"]
+   [kerodon "0.2.0"]
    [log4j
     "1.2.17"
     :exclusions
@@ -35,5 +36,5 @@
   :plugins
   [[lein-ring "0.8.6"]]
   :description
-  "FIXME: write description"
+  "Blue Hood is an experiment."
   :min-lein-version "2.0.0")
