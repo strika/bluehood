@@ -8,36 +8,36 @@
 
 <form action="{{servlet-context}}/register" method="POST" class="form-horizontal">
   <div class="control-group">
-    <label for="id" class="control-label">Username</label>
+    <label for="username" class="control-label">Username</label>
     <div class="controls">
 
-      {% if id-error %}
-      <div class="error">{{id-error}}</div>
+      {% if username-error %}
+      <div class="error">{{username-error}}</div>
       {% endif %}
 
-      <input id="id" name="id" tabindex="1" type="text" value={{id}}></input>
+      <input id="username" name="username" tabindex="1" type="text" value={{username}}></input>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="pass" class="control-label">Password</label>
+    <label for="password" class="control-label">Password</label>
     <div class="controls">
-      {% if pass-error %}
-      <div class="error">{{pass-error}}</div>
+      {% if password-error %}
+      <div class="error">{{password-error}}</div>
       {% endif %}
 
-      <input id="pass" name="pass" tabindex="2" type="password"></input>
+      <input id="password" name="password" tabindex="2" type="password"></input>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="pass1" class="control-label">Password Confirmation</label>
+    <label for="password-confirmation" class="control-label">Password Confirmation</label>
     <div class="controls">
-      {% if pass1-error %}
-      <div class="error">{{pass1-error}}</div>
+      {% if password-confirmation-error %}
+      <div class="error">{{password-confirmation-error}}</div>
       {% endif %}
 
-      <input id="pass1" name="pass1" tabindex="3" type="password"></input>
+      <input id="password-confirmation" name="password-confirmation" tabindex="3" type="password"></input>
     </div>
   </div>
 

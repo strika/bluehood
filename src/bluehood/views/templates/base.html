@@ -21,10 +21,10 @@
         <div class="navbar-inner">
           <a class="brand" href="{{servlet-context}}/">Blue Hood</a> 
 
-          {% if user-id %}
+          {% if username %}
 
           <ul class="nav pull-right">
-            <li id="welcome" class="navbar-text">Signed in as {{user-id}}</li>
+            <li id="welcome" class="navbar-text">Signed in as {{username}}</li>
             <li class="divider-vertical"></li>
             <li><a href="{{servlet-context}}/profile">Profile</a></li>
             <li><a href="{{servlet-context}}/logout">Sign Out</a></li>

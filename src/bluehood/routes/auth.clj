@@ -7,48 +7,48 @@
             [noir.util.crypt :as crypt]
             [bluehood.models.db :as db]))
 
-(defn valid? [id pass pass1]
-  (vali/rule (vali/has-value? id)
-             [:id "user ID is required"])
-  (vali/rule (vali/min-length? pass 5)
-             [:pass "password must be at least 5 characters"])
-  (vali/rule (= pass pass1)
-             [:pass1 "entered passwords do not match"])
-  (not (vali/errors? :id :pass :pass1)))
+(defn valid? [username password password-confirmation]
+  (vali/rule (vali/has-value? username)
+             [username "Username is required"])
+  (vali/rule (vali/min-length? password 5)
+             [:password "Password must be at least 5 characters"])
+  (vali/rule (= password password-confirmation)
+             [:password-confirmation "Entered passwords do not match"])
+  (not (vali/errors? :username :password :password-confirmation)))
 
-(defn register [& [id]]
+(defn register [& [username]]
   (layout/render
     "registration.html"
-    {:id id
-     :id-error (vali/on-error :id first)
-     :pass-error (vali/on-error :pass first)
-     :pass1-error (vali/on-error :pass1 first)}))
+    {:id username
+     :username-error (vali/on-error :username first)
+     :password-error (vali/on-error :password first)
+     :password-confirmation-error (vali/on-error :password-confirmation first)}))
 
-(defn handle-registration [id pass pass1]
-  (if (valid? id pass pass1)
+(defn handle-registration [username password password-confirmation]
+  (if (valid? username password password-confirmation)
     (try
       (do
-        (db/create-user {:id id :pass (crypt/encrypt pass)})
-        (session/put! :user-id id)
+        (db/create-user {:id username :pass (crypt/encrypt password)})
+        (session/put! :username username)
         (resp/redirect "/"))
       (catch Exception ex
-        (vali/rule false [:id (.getMessage ex)])
+        (vali/rule false [:username (.getMessage ex)])
         (register)))
-    (register id)))
+    (register username)))
 
 (defn profile []
   (layout/render
     "profile.html"
-    {:user (db/get-user (session/get :user-id))}))
+    {:user (db/get-user (session/get :username))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
-  (db/update-user (session/get :user-id) first-name last-name email)
+  (db/update-user (session/get :username) first-name last-name email)
   (profile))
 
-(defn handle-login [id pass]
-  (let [user (db/get-user id)]
-    (if (and user (crypt/compare pass (:pass user)))
-      (session/put! :user-id id))
+(defn handle-login [username password]
+  (let [user (db/get-user username)]
+    (if (and user (crypt/compare password (:pass user)))
+      (session/put! :username username))
     (resp/redirect "/")))
 
 (defn logout []
@@ -59,15 +59,15 @@
   (GET "/register" []
        (register))
 
-  (POST "/register" [id pass pass1]
-        (handle-registration id pass pass1))
+  (POST "/register" [username password password-confirmation]
+        (handle-registration username password password-confirmation))
 
   (GET "/profile" [] (profile))
   
   (POST "/update-profile" {params :params} (update-profile params))
   
-  (POST "/login" [id pass]
-        (handle-login id pass))
+  (POST "/login" [username password]
+        (handle-login username password))
 
   (GET "/logout" []
         (logout)))
