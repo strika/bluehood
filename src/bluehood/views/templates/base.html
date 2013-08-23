@@ -1,97 +1,64 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Welcome to bluehood</title>		
-		<link href="{{servlet-context}}/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
-		<link href="{{servlet-context}}/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"></link>
-		<link href="{{servlet-context}}/css/screen.css" rel="stylesheet" type="text/css"></link>
-		
-		<script type="text/javascript">
-		var context = "{{servlet-context}}";
-		</script>
-		<script type="text/javascript" src="//code.jquery.com/jquery-1.10.0.min.js"></script>
-		<script type="text/javascript" src="{{servlet-context}}/js/bootstrap.min.js"></script>
+  <head>
+    <title>Welcome to Blue Hood</title>		
+    <link href="{{servlet-context}}/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+    <link href="{{servlet-context}}/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"></link>
+    <link href="{{servlet-context}}/css/screen.css" rel="stylesheet" type="text/css"></link>
 
-	</head>
-	<body>
-	 <div id="wrap">	
-			
-{% block navbar %}
+    <script type="text/javascript">
+      var context = "{{servlet-context}}";
+    </script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="{{servlet-context}}/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
 
-			<div class="navbar navbar-fixed-top">
-				<div class="navbar-inner">
-					<div class="container-fluid">
-						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
-							<span class="icon-bar"></span> 
-							<span class="icon-bar"></span> 
-							<span class="icon-bar"></span>
-						</a> 
-						<a class="brand" href="{{servlet-context}}/">bluehood</a> 
-						
-{% if user-id %}
+      {% block navbar %}
 
-						<div class="btn-group pull-right">
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								<i class="icon-user"></i>{{user-id}}<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a href="{{servlet-context}}/profile">Profile</a></li>
-		           				<li class="divider"></li>
-								<li><a href="{{servlet-context}}/logout">Sign Out</a></li>
-							</ul>
-						</div>
-						
-{% else %}
+      <div class="navbar">
+        <div class="navbar-inner">
+          <a class="brand" href="{{servlet-context}}/">Blue Hood</a> 
 
-						<ul class="nav pull-right">	
-						<li>				
-								<form action="{{servlet-context}}/login" class="navbar-form" method="POST">
-									<input class="span2" 
-									       id="id" 
-									       name="id" 
-									       placeholder="user id"
-										   style="margin-right: 5px" 
-										   type="text"/>
-									 <input class="span2" 
-									        id="pass" 
-									        name="pass" 
-									        placeholder="password"
-										    style="margin-right: 5px" 
-										    type="password"/> 
-									<input class="btn" type="submit" value="Login"></input>
-								</form>
-								</li>
-								<li>
-									<a href="{{servlet-context}}/register">Register</a>
-								</li>
-						</ul>
-						
-{% endif %}
+          {% if user-id %}
 
-						<div class="nav-collapse"></div> <!--/.nav-collapse -->
-					</div>
-				</div>
-			</div>
-			
-{% endblock %}
+          <ul class="nav pull-right">
+            <li id="welcome" class="navbar-text">Signed in as {{user-id}}</li>
+            <li class="divider-vertical"></li>
+            <li><a href="{{servlet-context}}/profile">Profile</a></li>
+            <li><a href="{{servlet-context}}/logout">Sign Out</a></li>
+          </ul>
 
-		
-			<div class="container-fluid">
-				
-{% block content %}
- 
-				
-{% endblock %}
+          {% else %}
 
-			</div>
-			 <div id="push"></div>
-		</div>
-	
-		<div id="footer">
-        	 <div class="container">                
-            	 <p class="muted footer-text">Footer content.</p>
-         	</div>
-    	</div>
-	    
-	</body>
+          <ul class="nav pull-right">	
+            <li>				
+            <form action="{{servlet-context}}/login" class="navbar-form" method="POST">
+              <input class="span2" id="id" name="id" placeholder="user id" style="margin-right: 5px" type="text"/>
+              <input class="span2" id="pass" name="pass" placeholder="password" style="margin-right: 5px" type="password"/> 
+              <input class="btn" type="submit" value="Login"></input>
+            </form>
+            </li>
+            <li>
+            <a href="{{servlet-context}}/register">Sign Up</a>
+            </li>
+          </ul>
+
+          {% endif %}
+
+          <div class="nav-collapse"></div> <!--/.nav-collapse -->
+        </div>
+      </div>
+
+      {% endblock %}
+
+      {% block content %}
+
+      {% endblock %}
+
+    </div>
+
+    <div id="push"></div>
+  </body>
 </html>
