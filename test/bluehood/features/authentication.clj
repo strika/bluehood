@@ -4,8 +4,10 @@
         clojure.test)
   (:require [bluehood.handler :refer [app]]))
 
-(deftest user-can-see-sign-in-form
+(deftest user-can-see-sign-in-form-on-the-homepage
   (-> (session app)
       (visit "/")
-      (has (value? "id" "user id"))
-      (has (value? "pass" "password"))))
+      (within [:h1]
+        (has (text? "Welcome to bluehood")))
+      (has (value? [:#id] ""))
+      (has (value? [:#pass] ""))))
