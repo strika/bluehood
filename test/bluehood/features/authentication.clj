@@ -1,7 +1,8 @@
 (ns bluehood.features.authentication
   (:use kerodon.core
         kerodon.test
-        clojure.test)
+        clojure.test
+        bluehood.features.schema)
   (:require [bluehood.handler :refer [app]]))
 
 (deftest user-can-see-sign-in-form-on-the-homepage
