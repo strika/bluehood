@@ -33,4 +33,6 @@
    [ragtime/ragtime.lein "0.3.3"]]
   :description
   "Blue Hood is an experiment."
-  :min-lein-version "2.0.0")
+  :min-lein-version "2.0.0"
+  :ragtime {:migrations ragtime.sql.files/migrations
+            :database "jdbc:postgresql://localhost:5432/bluehood?user=strika&password=strika"})
