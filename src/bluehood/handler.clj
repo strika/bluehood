@@ -5,8 +5,7 @@
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
             [com.postspectacular.rotor :as rotor]
-            [bluehood.routes.auth :refer [auth-routes]]
-            [bluehood.models.schema :as schema]))
+            [bluehood.routes.auth :refer [auth-routes]]))
 
 (defroutes
   app-routes
@@ -29,7 +28,6 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "bluehood.log", :max-size (* 512 1024), :backlog 10})
-  (if-not (schema/initialized?) (schema/create-tables))
   (timbre/info "bluehood started successfully"))
 
 (defn destroy
