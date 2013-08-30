@@ -13,6 +13,7 @@
    [log4j "1.2.17" :exclusions [javax.mail/mail javax.jms/jms com.sun.jdmk/jmxtools com.sun.jmx/jmxri]]
    [markdown-clj "0.9.29"]
    [postgresql/postgresql "9.1-901.jdbc4"]
+   [ragtime "0.3.3"]
    [ring-server "0.2.8"]
    [selmer "0.4.0"]]
   :ring
@@ -28,7 +29,8 @@
   :url
   "http://example.com/FIXME"
   :plugins
-  [[lein-ring "0.8.6"]]
+  [[lein-ring "0.8.6"]
+   [ragtime/ragtime.lein "0.3.3"]]
   :description
   "Blue Hood is an experiment."
   :min-lein-version "2.0.0")
