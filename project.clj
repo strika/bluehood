@@ -3,24 +3,18 @@
   "0.1.0-SNAPSHOT"
   :dependencies
   [[org.clojure/clojure "1.5.1"]
-   [lib-noir "0.6.8"]
-   [compojure "1.1.5"]
-   [ring-server "0.2.8"]
-   [selmer "0.4.0"]
    [com.taoensso/timbre "2.5.0"]
    [com.postspectacular/rotor "0.1.0"]
    [com.taoensso/tower "1.7.1"]
-   [markdown-clj "0.9.29"]
-   [postgresql/postgresql "9.1-901.jdbc4"]
+   [compojure "1.1.5"]
    [korma "0.3.0-RC5"]
    [kerodon "0.2.0"]
-   [log4j
-    "1.2.17"
-    :exclusions
-    [javax.mail/mail
-     javax.jms/jms
-     com.sun.jdmk/jmxtools
-     com.sun.jmx/jmxri]]]
+   [lib-noir "0.6.8"]
+   [log4j "1.2.17" :exclusions [javax.mail/mail javax.jms/jms com.sun.jdmk/jmxtools com.sun.jmx/jmxri]]
+   [markdown-clj "0.9.29"]
+   [postgresql/postgresql "9.1-901.jdbc4"]
+   [ring-server "0.2.8"]
+   [selmer "0.4.0"]]
   :ring
   {:handler bluehood.handler/war-handler,
    :init bluehood.handler/init,
