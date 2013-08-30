@@ -9,4 +9,4 @@
   (parser/render-file (str template-path template)
                       (assoc params
                              :servlet-context (:context *request*)
-                             :username (session/get :username))))
+                             :name (session/get :name))))

@@ -7,39 +7,44 @@
             [noir.util.crypt :as crypt]
             [bluehood.models.db :as db]))
 
-(defn valid? [username password password-confirmation]
-  (vali/rule (vali/has-value? username)
-             [username "Username is required"])
+(defn valid? [name email password password-confirmation]
+  (vali/rule (vali/has-value? name)
+             [name "Name is required"])
+  (vali/rule (vali/has-value? email)
+             [email "Email is required"])
   (vali/rule (vali/min-length? password 5)
              [:password "Password must be at least 5 characters"])
   (vali/rule (= password password-confirmation)
              [:password-confirmation "Entered passwords do not match"])
-  (not (vali/errors? :username :password :password-confirmation)))
+  (not (vali/errors? :name :email :password :password-confirmation)))
 
-(defn register [& [username]]
+(defn register [& [name email]]
   (layout/render
     "registration.html"
-    {:id username
-     :username-error (vali/on-error :username first)
+    {:name name
+     :email email
+     :name-error (vali/on-error :name first)
+     :email-error (vali/on-error :email first)
      :password-error (vali/on-error :password first)
      :password-confirmation-error (vali/on-error :password-confirmation first)}))
 
-(defn handle-registration [username password password-confirmation]
-  (if (valid? username password password-confirmation)
+(defn handle-registration [name email password password-confirmation]
+  (if (valid? name email password password-confirmation)
     (try
       (do
-        (db/create-user {:id username :pass (crypt/encrypt password)})
-        (session/put! :username username)
-        (resp/redirect "/"))
+        (let [user (db/create-user {:name name :email email :password (crypt/encrypt password)})]
+          (session/put! :id (:id user))
+          (session/put! :name (:name user))
+          (resp/redirect "/")))
       (catch Exception ex
-        (vali/rule false [:username (.getMessage ex)])
+        (vali/rule false [:id (.getMessage ex)])
         (register)))
-    (register username)))
+    (register name email)))
 
 (defn profile []
   (layout/render
     "profile.html"
-    {:user (db/get-user (session/get :username))}))
+    {:user (db/get-user (session/get :id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
   (db/update-user (session/get :username) first-name last-name email)
@@ -59,15 +64,15 @@
   (GET "/register" []
        (register))
 
-  (POST "/register" [username password password-confirmation]
-        (handle-registration username password password-confirmation))
+  (POST "/register" [name email password password-confirmation]
+        (handle-registration name email password password-confirmation))
 
   (GET "/profile" [] (profile))
-  
+
   (POST "/update-profile" {params :params} (update-profile params))
-  
+
   (POST "/login" [username password]
         (handle-login username password))
 
   (GET "/logout" []
-        (logout)))
+       (logout)))

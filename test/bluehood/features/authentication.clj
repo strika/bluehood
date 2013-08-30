@@ -12,23 +12,23 @@
                     (clojure.java.jdbc/set-rollback-only)
                     (f)))))
 
-(deftest user-can-see-sign-in-form-on-the-homepage
+(deftest user-can-see-sign-in-form
   (-> (session app)
       (visit "/")
-      (within [:h1]
-        (has (text? "Welcome to bluehood")))
-      (has (value? [:#id] ""))
-      (has (value? [:#pass] ""))))
+      (follow "Sign In")
+      (has (value? [:#email] ""))
+      (has (value? [:#password] ""))))
 
 (deftest user-sign-up
-  (let [user {:username "mike" :password "topsecret"}]
+  (let [user {:name "john" :email "john@example.com" :password "topsecret"}]
     (-> (session app)
       (visit "/")
       (follow "Sign Up")
-      (fill-in "Username" (:username user))
+      (fill-in "Name" (:name user))
+      (fill-in "Email" (:email user))
       (fill-in "Password" (:password user))
       (fill-in "Password Confirmation" (:password user))
       (press "Sign Up")
       (follow-redirect)
       (within [:#welcome]
-        (has (text? (str "Signed in as " (:username user))))))))
+        (has (text? (str "Signed in as " (:name user))))))))

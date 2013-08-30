@@ -21,10 +21,10 @@
         <div class="navbar-inner">
           <a class="brand" href="{{servlet-context}}/">Blue Hood</a> 
 
-          {% if username %}
+          {% if name %}
 
           <ul class="nav pull-right">
-            <li id="welcome" class="navbar-text">Signed in as {{username}}</li>
+            <li id="welcome" class="navbar-text">Signed in as {{name}}</li>
             <li class="divider-vertical"></li>
             <li><a href="{{servlet-context}}/profile">Profile</a></li>
             <li><a href="{{servlet-context}}/logout">Sign Out</a></li>
@@ -33,16 +33,8 @@
           {% else %}
 
           <ul class="nav pull-right">	
-            <li>				
-            <form action="{{servlet-context}}/login" class="navbar-form" method="POST">
-              <input class="span2" id="id" name="id" placeholder="user id" style="margin-right: 5px" type="text"/>
-              <input class="span2" id="pass" name="pass" placeholder="password" style="margin-right: 5px" type="password"/> 
-              <input class="btn" type="submit" value="Login"></input>
-            </form>
-            </li>
-            <li>
-            <a href="{{servlet-context}}/register">Sign Up</a>
-            </li>
+            <li><a href="">Sign In</a></li>
+            <li><a href="{{servlet-context}}/register">Sign Up</a></li>
           </ul>
 
           {% endif %}

@@ -4,14 +4,26 @@
 
 <form action="{{servlet-context}}/register" method="POST" class="form-horizontal">
   <div class="control-group">
-    <label for="username" class="control-label">Username</label>
+    <label for="name" class="control-label">Name</label>
     <div class="controls">
 
-      {% if username-error %}
-      <div class="error">{{username-error}}</div>
+      {% if name-error %}
+      <div class="error">{{name-error}}</div>
       {% endif %}
 
-      <input id="username" name="username" tabindex="1" type="text" value={{username}}></input>
+      <input id="name" name="name" tabindex="1" type="text" value={{name}}></input>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="email" class="control-label">Email</label>
+    <div class="controls">
+
+      {% if email-error %}
+      <div class="error">{{email-error}}</div>
+      {% endif %}
+
+      <input id="email" name="email" tabindex="1" type="text" value={{email}}></input>
     </div>
   </div>
 
