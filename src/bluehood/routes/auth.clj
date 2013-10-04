@@ -28,13 +28,16 @@
      :password-error (vali/on-error :password first)
      :password-confirmation-error (vali/on-error :password-confirmation first)}))
 
+(defn set-user-session [user]
+  (session/put! :id (:id user))
+  (session/put! :name (:name user)))
+
 (defn handle-registration [name email password password-confirmation]
   (if (valid? name email password password-confirmation)
     (try
       (do
         (let [user (db/create-user {:name name :email email :password (crypt/encrypt password)})]
-          (session/put! :id (:id user))
-          (session/put! :name (:name user))
+          (set-user-session user)
           (resp/redirect "/")))
       (catch Exception ex
         (vali/rule false [:id (.getMessage ex)])
@@ -44,20 +47,20 @@
 (defn profile []
   (layout/render
     "profile.html"
-    {:user (db/get-user (session/get :id))}))
+    {:user (db/find-user (session/get :id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
-  (db/update-user (session/get :username) first-name last-name email)
+  (db/update-user (session/get :id) first-name last-name email)
   (profile))
 
 (defn show-login []
   (layout/render
     "login.html"))
 
-(defn handle-login [username password]
-  (let [user (db/get-user username)]
-    (if (and user (crypt/compare password (:pass user)))
-      (session/put! :username username))
+(defn handle-login [email password]
+  (let [user (db/find-user-by-email email)]
+    (if (and user (crypt/compare password (:password user)))
+      (set-user-session user))
     (resp/redirect "/")))
 
 (defn logout []
@@ -77,8 +80,8 @@
 
   (GET "/login" [] (show-login))
 
-  (POST "/login" [username password]
-        (handle-login username password))
+  (POST "/login" [email password]
+        (handle-login email password))
 
   (GET "/logout" []
        (logout)))

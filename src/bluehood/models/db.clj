@@ -18,7 +18,12 @@
                :email email})
   (where {:id id})))
 
-(defn get-user [id]
+(defn find-user [id]
   (first (select users
                  (where {:id id})
+                 (limit 1))))
+
+(defn find-user-by-email [email]
+  (first (select users
+                 (where {:email email})
                  (limit 1))))
