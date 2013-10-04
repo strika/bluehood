@@ -33,4 +33,15 @@
   (let [user {:name "john" :email "john@example.com" :password "topsecret"}]
     (-> (session app)
       (sign-up-page/sign-up user)
+      (follow-redirect)
       (sign-in-page/user-should-be-signed-in user))))
+
+(deftest user-sign-up-with-empty-form
+  (-> (session app)
+    (sign-up-page/sign-up {})
+    (within [:#name-error]
+      (has (text? "Name is required")))
+    (within [:#email-error]
+      (has (text? "Email is required")))
+    (within [:#password-error]
+      (has (text? "Password must be at least 5 characters")))))

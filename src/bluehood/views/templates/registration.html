@@ -10,7 +10,7 @@
     <div class="controls">
 
       {% if name-error %}
-      <div class="error">{{name-error}}</div>
+      <div id="name-error" class="error">{{name-error}}</div>
       {% endif %}
 
       <input id="name" name="name" tabindex="1" type="text" value={{name}}></input>
@@ -22,7 +22,7 @@
     <div class="controls">
 
       {% if email-error %}
-      <div class="error">{{email-error}}</div>
+      <div id="email-error" class="error">{{email-error}}</div>
       {% endif %}
 
       <input id="email" name="email" tabindex="1" type="text" value={{email}}></input>
@@ -33,7 +33,7 @@
     <label for="password" class="control-label">Password</label>
     <div class="controls">
       {% if password-error %}
-      <div class="error">{{password-error}}</div>
+      <div id="password-error" class="error">{{password-error}}</div>
       {% endif %}
 
       <input id="password" name="password" tabindex="2" type="password"></input>

@@ -9,9 +9,9 @@
 
 (defn valid? [name email password password-confirmation]
   (vali/rule (vali/has-value? name)
-             [name "Name is required"])
+             [:name "Name is required"])
   (vali/rule (vali/has-value? email)
-             [email "Email is required"])
+             [:email "Email is required"])
   (vali/rule (vali/min-length? password 5)
              [:password "Password must be at least 5 characters"])
   (vali/rule (= password password-confirmation)

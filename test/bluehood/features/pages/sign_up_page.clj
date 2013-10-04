@@ -10,5 +10,4 @@
     (fill-in "Email" (:email user))
     (fill-in "Password" (:password user))
     (fill-in "Password Confirmation" (:password user))
-    (press "Sign Up")
-    (follow-redirect)))
+    (press "Sign Up")))
