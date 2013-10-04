@@ -3,7 +3,8 @@
         kerodon.test
         clojure.test)
   (:require [bluehood.handler :refer [app]]
-            [bluehood.models.schema :refer [db-spec]]))
+            [bluehood.models.schema :refer [db-spec]]
+            [bluehood.features.pages.sign-up-page :as sign-up-page]))
 
 (use-fixtures :each
               (fn [f]
@@ -22,13 +23,6 @@
 (deftest user-sign-up
   (let [user {:name "john" :email "john@example.com" :password "topsecret"}]
     (-> (session app)
-      (visit "/")
-      (follow "Sign Up")
-      (fill-in "Name" (:name user))
-      (fill-in "Email" (:email user))
-      (fill-in "Password" (:password user))
-      (fill-in "Password Confirmation" (:password user))
-      (press "Sign Up")
-      (follow-redirect)
+      (sign-up-page/sign-up user)
       (within [:#welcome]
         (has (text? (str "Signed in as " (:name user))))))))
