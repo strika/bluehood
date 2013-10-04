@@ -5,7 +5,7 @@
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
-            [bluehood.models.db :as db]))
+            [bluehood.models.user :as user]))
 
 (defn valid? [name email password password-confirmation]
   (vali/rule (vali/has-value? name)
@@ -36,7 +36,7 @@
   (if (valid? name email password password-confirmation)
     (try
       (do
-        (let [user (db/create-user {:name name :email email :password (crypt/encrypt password)})]
+        (let [user (user/create {:name name :email email :password (crypt/encrypt password)})]
           (set-user-session user)
           (resp/redirect "/")))
       (catch Exception ex
@@ -47,10 +47,10 @@
 (defn profile []
   (layout/render
     "profile.html"
-    {:user (db/find-user (session/get :id))}))
+    {:user (user/find (session/get :id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
-  (db/update-user (session/get :id) first-name last-name email)
+  (user/update (session/get :id) first-name last-name email)
   (profile))
 
 (defn show-login []
@@ -58,7 +58,7 @@
     "login.html"))
 
 (defn handle-login [email password]
-  (let [user (db/find-user-by-email email)]
+  (let [user (user/find-by-email email)]
     (if (and user (crypt/compare password (:password user)))
       (set-user-session user))
     (resp/redirect "/")))
