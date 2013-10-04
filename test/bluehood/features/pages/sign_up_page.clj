@@ -1,10 +1,11 @@
 (ns bluehood.features.pages.sign-up-page
   (:use kerodon.core))
 
+(def sign-up-page "/register")
+
 (defn sign-up [session user]
   (-> session
-    (visit "/")
-    (follow "Sign Up")
+    (visit sign-up-page)
     (fill-in "Name" (:name user))
     (fill-in "Email" (:email user))
     (fill-in "Password" (:password user))
