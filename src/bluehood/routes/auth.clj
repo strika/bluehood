@@ -7,17 +7,6 @@
             [noir.util.crypt :as crypt]
             [bluehood.models.user :as user]))
 
-(defn valid? [name email password password-confirmation]
-  (vali/rule (vali/has-value? name)
-             [:name "Name is required"])
-  (vali/rule (vali/has-value? email)
-             [:email "Email is required"])
-  (vali/rule (vali/min-length? password 5)
-             [:password "Password must be at least 5 characters"])
-  (vali/rule (= password password-confirmation)
-             [:password-confirmation "Entered passwords do not match"])
-  (not (vali/errors? :name :email :password :password-confirmation)))
-
 (defn register [& [name email]]
   (layout/render
     "registration.html"
@@ -33,21 +22,22 @@
   (session/put! :name (:name user)))
 
 (defn handle-registration [name email password password-confirmation]
-  (if (valid? name email password password-confirmation)
-    (try
-      (do
-        (let [user (user/create {:name name :email email :password (crypt/encrypt password)})]
-          (set-user-session user)
-          (resp/redirect "/")))
-      (catch Exception ex
-        (vali/rule false [:id (.getMessage ex)])
-        (register)))
-    (register name email)))
+  (let [user (user/build name email password password-confirmation)]
+    (if (user/valid? user)
+      (try
+        (do
+          (let [user (user/create {:name name :email email :password (crypt/encrypt password)})]
+            (set-user-session user)
+            (resp/redirect "/")))
+        (catch Exception ex
+          (vali/rule false [:id (.getMessage ex)])
+          (register)))
+      (register name email))))
 
 (defn profile []
   (layout/render
     "profile.html"
-    {:user (user/find (session/get :id))}))
+    {:user (user/find-by-id (session/get :id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
   (user/update (session/get :id) first-name last-name email)

@@ -42,6 +42,4 @@
     (within [:#name-error]
       (has (text? "Name is required")))
     (within [:#email-error]
-      (has (text? "Email is required")))
-    (within [:#password-error]
-      (has (text? "Password must be at least 5 characters")))))
+      (has (text? "Email is required")))))

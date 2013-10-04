@@ -4,10 +4,13 @@
 
 (k/defentity users)
 
+(defn build [name email password password-confirmation]
+  {:name name :email email :password password :password-confirmation password-confirmation})
+
 (defn create [user]
   (k/insert users (k/values user)))
 
-(defn find [id]
+(defn find-by-id [id]
   (first
     (k/select users
       (k/where {:id id})
@@ -25,8 +28,6 @@
              [:name "Name is required"])
   (v/rule (v/has-value? (:email user))
              [:email "Email is required"])
-  (v/rule (v/min-length? (:password user) 5)
-             [:password "Password must be at least 5 characters"])
   (v/rule (= (:password user) (:password-confirmation user))
              [:password-confirmation "Entered passwords do not match"])
   (not (v/errors? :name :email :password :password-confirmation)))
