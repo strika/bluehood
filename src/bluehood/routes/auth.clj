@@ -50,6 +50,10 @@
   (db/update-user (session/get :username) first-name last-name email)
   (profile))
 
+(defn show-login []
+  (layout/render
+    "login.html"))
+
 (defn handle-login [username password]
   (let [user (db/get-user username)]
     (if (and user (crypt/compare password (:pass user)))
@@ -70,6 +74,8 @@
   (GET "/profile" [] (profile))
 
   (POST "/update-profile" {params :params} (update-profile params))
+
+  (GET "/login" [] (show-login))
 
   (POST "/login" [username password]
         (handle-login username password))

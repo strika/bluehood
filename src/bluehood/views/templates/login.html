@@ -1,0 +1,38 @@
+{% extends "bluehood/views/templates/base.html" %}
+
+{% block content %}
+
+<h2>Sign In</h2>
+
+<form action="{{servlet-context}}/login" method="POST" class="form-horizontal">
+  <div class="control-group">
+    <label for="email" class="control-label">Email</label>
+    <div class="controls">
+
+      {% if email-error %}
+      <div class="error">{{email-error}}</div>
+      {% endif %}
+
+      <input id="email" name="email" tabindex="1" type="text" value={{email}}></input>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="password" class="control-label">Password</label>
+    <div class="controls">
+      {% if password-error %}
+      <div class="error">{{password-error}}</div>
+      {% endif %}
+
+      <input id="password" name="password" tabindex="2" type="password"></input>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <input class="btn" tabindex="3" type="submit" value="Sign In">
+    </div>
+  </div>
+</form>
+
+{% endblock %}
