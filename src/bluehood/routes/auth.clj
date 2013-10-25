@@ -12,14 +12,15 @@
 
 (defn set-user-session [user]
   (if (user/valid? user)
-    (session/put! :id (:id user))
-    (session/put! :name (:name user)))
+    (do
+      (session/put! :id (:id user))
+      (session/put! :name (:name user))))
   user)
 
 (defn redirect-user [user]
   (if (user/valid? user)
-    (resp/redirect "/"))
-    (get-register user))
+    (resp/redirect "/")
+    (get-register user)))
 
 (defn save-user [{:keys [name email password] :as user}]
   (if (user/valid? user)
