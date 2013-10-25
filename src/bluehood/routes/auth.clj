@@ -7,14 +7,14 @@
             [noir.util.crypt :as crypt]
             [bluehood.models.user :as user]))
 
-(defn register [& [user]]
+(defn get-register [& [user]]
   (layout/render "registration.html" {:user user}))
 
 (defn set-user-session [user]
   (session/put! :id (:id user))
   (session/put! :name (:name user)))
 
-(defn handle-registration [name email password password-confirmation]
+(defn post-register [name email password password-confirmation]
   (let [user (user/build name email password password-confirmation)]
     (if (user/valid? user)
       (try
@@ -24,8 +24,8 @@
             (resp/redirect "/")))
         (catch Exception ex
           (vali/rule false [:id (.getMessage ex)])
-          (register)))
-      (register (user/validate user)))))
+          (get-register)))
+      (get-register (user/validate user)))))
 
 (defn profile []
   (layout/render
@@ -52,10 +52,10 @@
 
 (defroutes auth-routes
   (GET "/register" []
-       (register))
+       (get-register))
 
   (POST "/register" [name email password password-confirmation]
-        (handle-registration name email password password-confirmation))
+        (post-register name email password password-confirmation))
 
   (GET "/profile" [] (profile))
 
