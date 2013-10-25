@@ -7,15 +7,8 @@
             [noir.util.crypt :as crypt]
             [bluehood.models.user :as user]))
 
-(defn register [& [name email]]
-  (layout/render
-    "registration.html"
-    {:name name
-     :email email
-     :name-error (vali/on-error :name first)
-     :email-error (vali/on-error :email first)
-     :password-error (vali/on-error :password first)
-     :password-confirmation-error (vali/on-error :password-confirmation first)}))
+(defn register [& [user]]
+  (layout/render "registration.html" {:user user}))
 
 (defn set-user-session [user]
   (session/put! :id (:id user))
@@ -32,7 +25,7 @@
         (catch Exception ex
           (vali/rule false [:id (.getMessage ex)])
           (register)))
-      (register name email))))
+      (register (user/validate user)))))
 
 (defn profile []
   (layout/render

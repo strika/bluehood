@@ -23,11 +23,26 @@
 
 (defn update [])
 
+(defn validate-name [user]
+  (if (v/has-value? (:name user))
+    user
+    (update-in user [:errors :name] conj "Name is required")))
+
+(defn validate-email [user]
+  (if (v/has-value? (:email user))
+    user
+    (update-in user [:errors :email] conj "Email is required")))
+
+(defn validate-password-confirmation [user]
+  (if (= (:password user) (:password-confirmation user))
+    user
+    (update-in user [:errors :password-confirmation] conj "Entered passwords do not match")))
+
+(defn validate [user]
+  (-> (assoc user :errors {})
+      (validate-name)
+      (validate-email)
+      (validate-password-confirmation)))
+
 (defn valid? [user]
-  (v/rule (v/has-value? (:name user))
-             [:name "Name is required"])
-  (v/rule (v/has-value? (:email user))
-             [:email "Email is required"])
-  (v/rule (= (:password user) (:password-confirmation user))
-             [:password-confirmation "Entered passwords do not match"])
-  (not (v/errors? :name :email :password :password-confirmation)))
+  (empty? (:errors (validate user))))
