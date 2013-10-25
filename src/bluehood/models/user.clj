@@ -45,4 +45,4 @@
       (validate-password-confirmation)))
 
 (defn valid? [user]
-  (empty? (:errors (validate user))))
+  (empty? (:errors user)))

@@ -11,21 +11,27 @@
   (layout/render "registration.html" {:user user}))
 
 (defn set-user-session [user]
-  (session/put! :id (:id user))
-  (session/put! :name (:name user)))
+  (if (user/valid? user)
+    (session/put! :id (:id user))
+    (session/put! :name (:name user)))
+  user)
+
+(defn redirect-user [user]
+  (if (user/valid? user)
+    (resp/redirect "/"))
+    (get-register user))
+
+(defn save-user [{:keys [name email password] :as user}]
+  (if (user/valid? user)
+    (user/create {:name name :email email :password (crypt/encrypt password)}))
+  user)
 
 (defn post-register [name email password password-confirmation]
-  (let [user (user/build name email password password-confirmation)]
-    (if (user/valid? user)
-      (try
-        (do
-          (let [user (user/create {:name name :email email :password (crypt/encrypt password)})]
-            (set-user-session user)
-            (resp/redirect "/")))
-        (catch Exception ex
-          (vali/rule false [:id (.getMessage ex)])
-          (get-register)))
-      (get-register (user/validate user)))))
+  (-> (user/build name email password password-confirmation)
+      (user/validate)
+      (save-user)
+      (set-user-session)
+      (redirect-user)))
 
 (defn profile []
   (layout/render
