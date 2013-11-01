@@ -24,22 +24,22 @@
 (deftest user-sign-in
   (let [user {:name "john" :email "john@example.com" :password "topsecret"}]
     (-> (session app)
-      (sign-up-page/sign-up user)
-      (sign-in-page/sign-out)
-      (sign-in-page/sign-in user)
-      (sign-in-page/user-should-be-signed-in user))))
+        (sign-up-page/sign-up user)
+        (sign-in-page/sign-out)
+        (sign-in-page/sign-in user)
+        (sign-in-page/user-should-be-signed-in user))))
 
 (deftest user-sign-up
   (let [user {:name "john" :email "john@example.com" :password "topsecret"}]
     (-> (session app)
-      (sign-up-page/sign-up user)
-      (follow-redirect)
-      (sign-in-page/user-should-be-signed-in user))))
+        (sign-up-page/sign-up user)
+        (follow-redirect)
+        (sign-in-page/user-should-be-signed-in user))))
 
 (deftest user-sign-up-with-empty-form
   (-> (session app)
-    (sign-up-page/sign-up {})
-    (within [:#name-error]
-      (has (text? "Name is required")))
-    (within [:#email-error]
-      (has (text? "Email is required")))))
+      (sign-up-page/sign-up {})
+      (within [:#name-error]
+        (has (text? "Name is required")))
+      (within [:#email-error]
+        (has (text? "Email is required")))))
