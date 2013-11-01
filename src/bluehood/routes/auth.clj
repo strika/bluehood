@@ -6,33 +6,19 @@
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
-            [bluehood.models.user :as user]))
+            [bluehood.models.user :as user]
+            [bluehood.services.user-registration :as user-registration]))
 
 (defn get-register [& [user]]
   (layout/render "registration.html" {:user user}))
-
-(defn set-user-session [user]
-  (if (valid? user)
-    (do
-      (session/put! :id (:id user))
-      (session/put! :name (:name user))))
-  user)
 
 (defn redirect-user [user]
   (if (valid? user)
     (resp/redirect "/")
     (get-register user)))
 
-(defn save-user [{:keys [name email password] :as user}]
-  (if (valid? user)
-    (user/create {:name name :email email :password (crypt/encrypt password)}))
-  user)
-
 (defn post-register [name email password password-confirmation]
-  (-> (user/build name email password password-confirmation)
-      (validate)
-      (save-user)
-      (set-user-session)
+  (-> (user-registration/execute name email password password-confirmation)
       (redirect-user)))
 
 (defn profile []
@@ -51,7 +37,7 @@
 (defn handle-login [email password]
   (let [user (user/find-by-email email)]
     (if (and user (crypt/compare password (:password user)))
-      (set-user-session user))
+      (user-registration/set-user-session user))
     (resp/redirect "/")))
 
 (defn logout []
