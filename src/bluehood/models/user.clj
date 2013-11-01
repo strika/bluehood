@@ -1,4 +1,5 @@
 (ns bluehood.models.user
+  (:use [bluehood.models.db])
   (:require [korma.core :as k]))
 
 (k/defentity users)
