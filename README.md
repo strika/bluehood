@@ -1,6 +1,6 @@
 # Blue Hood
 
-Blue Hood is an experiment.
+Blue Hood is web application written in [Clojure](http://clojure.org). It's deprecated in favour of [Green Hood](https://github.com/strika/greenhood).
 
 ## Prerequisites
 
